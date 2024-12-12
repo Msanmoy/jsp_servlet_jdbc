@@ -138,7 +138,7 @@ public class SocioDAOImpl extends AbstractDAOImpl implements SocioDAO {
             ps.setInt(idx++, socio.getEdad());
             ps.setString(idx, socio.getLocalidad());
 
-            ps.setInt(idx++, socio.getSocioId());
+            ps.setInt(5, socio.getSocioId());
 
             int rows = ps.executeUpdate();
 

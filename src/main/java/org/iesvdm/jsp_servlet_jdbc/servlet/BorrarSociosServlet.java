@@ -21,39 +21,22 @@ public class BorrarSociosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         RequestDispatcher dispatcher = null;
-
-        //CÓDIGO DE VALIDACIÓN ENCAPSULADO EN UN MÉTODO DE UTILERÍA
-        // SI OK ==> OPTIONAL CON SOCIO                 |
-        // SI FAIL ==> EMPTY OPTIONAL                   |
-        //                                              V
-        Optional<Socio> optionalSocio = UtilServlet.validaBorrar(request);
-
-        //SI OPTIONAL CON SOCIO PRESENTE <--> VALIDA OK
-        if (optionalSocio.isPresent()) {
-
-            //ACCEDO AL VALOR DE OPTIONAL DE SOCIO
-            Socio socio = optionalSocio.get();
-
-            //PERSITO EL SOCIO NUEVO EN BBDD
-            this.socioDAO.delete(socio.getSocioId());
-
-            //CARGO TODO EL LISTADO DE SOCIOS DE BBDD CON EL NUEVO
-            List<Socio> listado = this.socioDAO.getAll();
-
-            dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/listadoSociosB.jsp");
-        } else {
-
-            //El OPTIONAL ESTÁ VACÍO (EMPTY)
-            //PREPARO MENSAJE DE ERROR EN EL ÁMBITO DEL REQUEST PARA LA VISTA JSP
-            //                                |
-            //                                V
-            request.setAttribute("error", "Error de validación!");
-
-            //POR ÚLTIMO, REDIRECCIÓN INTERNA PARA LA URL /BorrarSocioServlet A formularioSocio.jsp
-            //                                                                      |
-            //                                                                      V
-            dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/formularioSocioB.jsp");
+        Integer value = null;
+        try {
+             value = Integer.parseInt(request.getParameter("codigo"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
+
+
+        if(value != null) {
+            this.socioDAO.delete(value);
+        }
+
+        List<Socio> listado = this.socioDAO.getAll();
+        request.setAttribute("listado", listado);
+        dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/listadoSociosB.jsp");
+
 
 
         //SIEMPRE PARA HACER EFECTIVA UNA REDIRECCIÓN INTERNA DEL SERVIDOR

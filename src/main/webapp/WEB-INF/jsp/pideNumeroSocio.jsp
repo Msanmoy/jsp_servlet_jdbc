@@ -15,7 +15,8 @@
 //                                                              v----RECOGER listado DE SOCIO DEL request --%>
         List<Socio> listado = (List<Socio>) request.getAttribute("listado");
 
-//      FOR-EACH SOBRE LA COLECCIÓN DE listado DE SOCIO--%>
+//     FOR-EACH SOBRE LA COLECCIÓN DE listado DE SOCIO--%>
+        
         for(Socio socio: listado) {
           %>
       <tr>
